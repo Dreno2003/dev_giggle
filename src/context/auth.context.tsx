@@ -1,6 +1,6 @@
 import { User } from "@supabase/supabase-js";
 import * as React from "react";
-import { supabase } from "../config/superbase.config";
+import { supabase } from "../config/firebase.config";
 
 // user will sign in
 // sign out

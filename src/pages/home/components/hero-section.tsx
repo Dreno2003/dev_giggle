@@ -11,7 +11,7 @@ function HeroSection() {
       <Header />
         <img
           src={FileUtils.absoluteUrl("/images/smile_emoji.png")}
-          className="absolute hidden md:block md:size-32 left-4 top-4"
+          className="absolute hidden md:block md:size-32 left-4 top-16"
         />
 
         <img

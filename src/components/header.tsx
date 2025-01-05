@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 function Header() {
   return (
     <div>
-      <div className="flex w-full text-white  items-center justify-between pt-4">
+      <div className="flex md:px-6 w-full text-white  items-center justify-between pt-4">
         <p>Logo</p>
 
         <div className="flex gap-x-2">
