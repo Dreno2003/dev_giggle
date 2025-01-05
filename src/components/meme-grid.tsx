@@ -1,15 +1,14 @@
-import { useState } from "react"
-import Image from "next/image"
-import { Download, Copy, X } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { useState } from "react";
+import { Download, Copy, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface Meme {
-  id: number
-  title: string
-  imageUrl: string
-  tags: string[]
-  category: string
+  id: number;
+  title: string;
+  imageUrl: string;
+  tags: string[];
+  category: string;
 }
 
 const MOCK_MEMES: Meme[] = [
@@ -18,44 +17,44 @@ const MOCK_MEMES: Meme[] = [
     title: "CSS Pain",
     imageUrl: "/placeholder.svg?height=400&width=400",
     tags: ["CSS", "Frontend"],
-    category: "Frontend"
+    category: "Frontend",
   },
   // Add more mock memes here
-]
+];
 
 export default function MemeGrid() {
-  const [selectedMeme, setSelectedMeme] = useState<Meme | null>(null)
+  const [selectedMeme, setSelectedMeme] = useState<Meme | null>(null);
 
   const copyImage = async (url: string) => {
     try {
-      const response = await fetch(url)
-      const blob = await response.blob()
+      const response = await fetch(url);
+      const blob = await response.blob();
       await navigator.clipboard.write([
         new ClipboardItem({
-          [blob.type]: blob
-        })
-      ])
+          [blob.type]: blob,
+        }),
+      ]);
     } catch (err) {
-      console.error('Failed to copy image:', err)
+      console.error("Failed to copy image:", err);
     }
-  }
+  };
 
   const downloadImage = async (url: string, title: string) => {
     try {
-      const response = await fetch(url)
-      const blob = await response.blob()
-      const blobUrl = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = blobUrl
-      link.download = `${title}.png`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      window.URL.revokeObjectURL(blobUrl)
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = `${title}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(blobUrl);
     } catch (err) {
-      console.error('Failed to download image:', err)
+      console.error("Failed to download image:", err);
     }
-  }
+  };
 
   return (
     <>
@@ -69,7 +68,7 @@ export default function MemeGrid() {
               className="cursor-pointer"
               onClick={() => setSelectedMeme(meme)}
             >
-              <Image
+              <img
                 src={meme.imageUrl}
                 alt={meme.title}
                 width={400}
@@ -79,15 +78,17 @@ export default function MemeGrid() {
             </div>
             <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/60 to-transparent p-4">
               <div className="w-full flex justify-between items-center">
-                <h3 className="text-white font-medium truncate">{meme.title}</h3>
+                <h3 className="text-white font-medium truncate">
+                  {meme.title}
+                </h3>
                 <div className="flex gap-2">
                   <Button
                     size="icon"
                     variant="secondary"
                     className="h-8 w-8"
                     onClick={(e) => {
-                      e.stopPropagation()
-                      copyImage(meme.imageUrl)
+                      e.stopPropagation();
+                      copyImage(meme.imageUrl);
                     }}
                   >
                     <Copy className="h-4 w-4" />
@@ -97,8 +98,8 @@ export default function MemeGrid() {
                     variant="secondary"
                     className="h-8 w-8"
                     onClick={(e) => {
-                      e.stopPropagation()
-                      downloadImage(meme.imageUrl, meme.title)
+                      e.stopPropagation();
+                      downloadImage(meme.imageUrl, meme.title);
                     }}
                   >
                     <Download className="h-4 w-4" />
@@ -123,7 +124,7 @@ export default function MemeGrid() {
                 <X className="h-4 w-4" />
               </Button>
               <div className="space-y-4">
-                <Image
+                <img
                   src={selectedMeme.imageUrl}
                   alt={selectedMeme.title}
                   width={800}
@@ -132,7 +133,9 @@ export default function MemeGrid() {
                 />
                 <div className="flex justify-between items-start">
                   <div>
-                    <h2 className="text-xl font-semibold mb-2">{selectedMeme.title}</h2>
+                    <h2 className="text-xl font-semibold mb-2">
+                      {selectedMeme.title}
+                    </h2>
                     <div className="flex flex-wrap gap-2">
                       {selectedMeme.tags.map((tag) => (
                         <span
@@ -153,7 +156,9 @@ export default function MemeGrid() {
                       Copy
                     </Button>
                     <Button
-                      onClick={() => downloadImage(selectedMeme.imageUrl, selectedMeme.title)}
+                      onClick={() =>
+                        downloadImage(selectedMeme.imageUrl, selectedMeme.title)
+                      }
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Download
@@ -166,6 +171,5 @@ export default function MemeGrid() {
         </DialogContent>
       </Dialog>
     </>
-  )
+  );
 }
-
