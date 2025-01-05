@@ -12,7 +12,7 @@ export class FirebaseHelper {
     });
   }
 
-  static get user() {
+  static getuser() {
     return new Promise<User | undefined | null>((resolve, reject) => {
       const done = auth.onAuthStateChanged(async (user) => {
         done();

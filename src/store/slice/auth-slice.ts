@@ -2,6 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Error } from "@/types/error.types";
 import { AuthService } from "@/services/auth.service";
+import { User  } from "firebase/auth";
 
 interface AuthState {
   lastFetched?: Date;
@@ -19,15 +20,21 @@ const initValue: AuthState = {
   isLoaded: false,
 };
 
+
+// import { User, OperationType, ProviderId  } from "firebase/auth";
+
+
 export const googleSignIn = createAsyncThunk<
+any,
   void,
-  string,
   { rejectValue: Error }
 >("auth/googleSignUp", async (_, { rejectWithValue }) => {
   try {
-    await AuthService.googleSingIn();
+    const res = await AuthService.googleSingIn();
+    return res.
   } catch (error) {
-    return rejectWithValue(error as Error);
+    const res = rejectWithValue(error as Error);
+    return res;
   }
 });
 
