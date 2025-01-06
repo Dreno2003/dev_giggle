@@ -1,6 +1,7 @@
 import MainLayout from "@/layout/main-layout";
 import Home from "@/pages/home/home";
 import { createBrowserRouter } from "react-router";
+import PrivateRoute from "@/components/private-route";
 // const HomeScreen = lazy(() => import("@/pages/home/HomeScreen"));
 // const Analytics = lazy(() => import("@/pages/analytics/AnalyticsMain"));
 // const Settings = lazy(() => import("@/pages/settings/SettingsMain"));
@@ -15,7 +16,7 @@ const mainPathRoutes = [
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <PrivateRoute><MainLayout /></PrivateRoute>,
     children: mainPathRoutes.map(({ path, element }) => ({ path, element })),
   },
 
