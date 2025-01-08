@@ -12,13 +12,7 @@ interface Meme {
 }
 
 const MOCK_MEMES: Meme[] = [
-  {
-    id: 1,
-    title: "CSS Pain",
-    imageUrl: "/placeholder.svg?height=400&width=400",
-    tags: ["CSS", "Frontend"],
-    category: "Frontend",
-  },
+
   {
     id: 2,
     title: "CSS Pain",
@@ -200,13 +194,14 @@ export default function MemeGrid() {
 
     
       <Dialog open={!!selectedMeme} onOpenChange={() => setSelectedMeme(null)}>
-        <DialogContent className="max-w-3xl md:max-w-xl md:max-h-[40rem]  ">
+        <DialogContent className="max-w-3xl md:max-w-xl h-auto md:max-h-[40rem]  ">
           {selectedMeme && (
             <div className="relative b">
               <Button
                 size="icon"
-                variant="ghost"
-                className="absolute right-0 top-0 z-10"
+                variant="destructive"
+                rounded={'full'}
+                className="absolute -right-6 -top-20 z-10"
                 onClick={() => setSelectedMeme(null)}
               >
                 <X className="h-4 w-4" />
@@ -217,7 +212,7 @@ export default function MemeGrid() {
                   alt={selectedMeme.title}
                   width={800}
                   height={700}
-                  className="rounded-lg  w-full"
+                  className="rounded-lg relative max-h-[33rem] object-contain w-full"
                 />
                 <div className="flex   justify-between items-start">
                   <div>

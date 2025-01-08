@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main className="min-h-screen  bg-background">
       {/* Hero Section */}
-      {/* <HeroSection /> */}
+      <HeroSection />
       <ContentSection />
     </main>
   );
