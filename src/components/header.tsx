@@ -8,8 +8,6 @@ import {
 import { Button } from "./ui/button";
 import * as React from "react";
 import SignIn from "@/pages/auth/SignIn";
-import { firebaseConfig } from "@/config/firebase.config";
-import { FirebaseHelper } from "@/helpers/firebase.helper";
 import { useAppSelector } from "@/store/redux-state-hook";
 
 function Header() {
@@ -35,6 +33,7 @@ function Header() {
       Login
       </Button>
     }
+
 
     <Button
     onClick={function () {

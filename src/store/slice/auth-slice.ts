@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Error } from "@/types/error.types";
 import { AuthService } from "@/services/auth.service";
-import { User } from "firebase/auth";
+// import { User } from "firebase/auth";
 
 interface AuthState {
   lastFetched?: Date;
@@ -33,7 +33,7 @@ void,
 >("auth/googleSignUp", async (_, { rejectWithValue }) => {
   try {
     const res = await AuthService.googleSingIn();
-    return res.
+    return res
   } catch (error) {
     const res = rejectWithValue(error as Error);
     return res;
@@ -122,7 +122,7 @@ const authSlice = createSlice({
 //   authSlice.reducer
 // );
 
-export const { resetAuthSlice, resetAuthSuccess, resetAuthError } =
+export const { resetAuthSlice, setUser, resetAuthSuccess, resetAuthError } =
 authSlice.actions;
 
 export default authSlice.reducer;
