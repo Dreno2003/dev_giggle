@@ -2,7 +2,7 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { FileUtils } from "@/utils/file.utils";
-import Header from "@/components/header";
+import Header from "@/components/header/header";
 
 function HeroSection() {
   return (

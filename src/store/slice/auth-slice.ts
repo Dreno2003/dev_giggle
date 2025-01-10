@@ -2,15 +2,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Error } from "@/types/error.types";
 import { AuthService } from "@/services/auth.service";
-import { UserSearchIcon } from "lucide-react";
 import { UserService } from "@/services/user.service";
-// import { User } from "firebase/auth";
+import { User } from "firebase/auth";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+// import { UserCredential  } from "firebase/auth";
 
 interface AuthState {
   status: {
     state: "success" | "loading" | "failed" | "idle";
     type?: "google" | "signout";
   };
+  user: User | undefined;
   error: Error;
   isLoaded: boolean;
   isUser: boolean;
@@ -21,23 +24,25 @@ const initValue: AuthState = {
   error: { message: "", code: 0 },
   isLoaded: false,
   isUser: false,
+  user: undefined,
 };
 
 // import { User, OperationType, ProviderId  } from "firebase/auth";
 
-export const googleSignIn = createAsyncThunk<any, void, { rejectValue: Error }>(
-  "auth/googleSignUp",
-  async (_, { rejectWithValue }) => {
-    try {
-      const res = await AuthService.googleSingIn();
-      await UserService.createUser(res.user);
-      return res;
-    } catch (error) {
-      const res = rejectWithValue(error as Error);
-      return res;
-    }
+export const googleSignIn = createAsyncThunk<
+  User,
+  void,
+  { rejectValue: Error }
+>("auth/googleSignUp", async (_, { rejectWithValue }) => {
+  try {
+    const res = await AuthService.googleSingIn();
+    await UserService.createUser(res.user);
+    return res.user;
+  } catch (error) {
+    const res = rejectWithValue(error as Error);
+    return res;
   }
-);
+});
 
 export const signOutuser = createAsyncThunk("auth/signout", async () => {
   await AuthService.signout();
@@ -79,11 +84,12 @@ const authSlice = createSlice({
           type: "google",
         };
       })
-      .addCase(googleSignIn.fulfilled, (state, _action) => {
+      .addCase(googleSignIn.fulfilled, (state, action) => {
         state.status = {
           state: "success",
           type: "google",
         };
+        state.user = action.payload;
         // state.lastFetched = new Date();
       })
       .addCase(googleSignIn.rejected, (state, action) => {
@@ -110,15 +116,16 @@ const authSlice = createSlice({
   },
 });
 
-// const authPersistConfig = {
-//   key: "auth",
-//   storage,
-// };
+const authPersistConfig = {
+  key: "auth",
+  storage,
+  blacklist: ["isUser", "error", "status", "isLoaded"],
+};
 
-// export const persistedAuthReducer = persistReducer(
-//   authPersistConfig,
-//   authSlice.reducer
-// );
+export const persistedAuthReducer = persistReducer(
+  authPersistConfig,
+  authSlice.reducer
+);
 
 export const { resetAuthSlice, setUser, resetAuthSuccess, resetAuthError } =
   authSlice.actions;

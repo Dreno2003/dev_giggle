@@ -1,10 +1,10 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import AuthSlice from "./slice/auth-slice";
+import {persistedAuthReducer} from "./slice/auth-slice";
 
 // Combine reducers
 const rootReducer = combineReducers({
   //   reducers here
-  auth: AuthSlice,
+  auth: persistedAuthReducer,
 });
 
 // Configure store with rootReducer

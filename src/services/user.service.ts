@@ -20,8 +20,6 @@ export class UserService {
         },
         { merge: true }
       );
-
-      console.log("User data stored in Firestore");
     } catch (error) {
       throw "Error storing user data";
     }
