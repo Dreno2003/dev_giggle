@@ -42,4 +42,7 @@ export class FirebaseHelper {
       }
     });
   }
+
+  // store in firestore
+    
 }
