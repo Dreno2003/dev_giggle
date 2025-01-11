@@ -19,29 +19,36 @@ import { FileDropZone } from "./upload-drag-drop-zone";
 import { TagInput } from "./tag-input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { InfoIcon, Sparkles } from "lucide-react";
-
-interface MemeDetails {
-  title: string;
-  description: string;
-  tags: string[];
-  creator: string;
-  license: string;
-  source: string;
-}
+import useUploadMeme from "@/hooks/useUploadMeme.hook";
+import { useAppSelector } from "@/store/redux-state-hook";
 
 export default function MemeUploadForm() {
   const [previews, setPreviews] = useState<string[]>([]);
-  const [memeDetails, setMemeDetails] = useState<MemeDetails>({
+  const [Files, setFiles] = useState<File[]>([]);
+  const [memeDetails, setMemeDetails] = useState<any>({
     title: "",
     description: "",
     tags: [],
     creator: "",
     license: "",
+    imageUrls: [""],
     source: "",
+    attribution:{
+      originalCreator: 'ok', // Name of the meme's original creator
+      license: 'string',// License type (e.g., "CC-BY 4.0")
+ 
+    }
+  });
+  const { user } = useAppSelector((state) => state.auth);
+  const userUploadMeme = useUploadMeme({
+    files: Files,
+    meme: memeDetails,
+    user: user!,
   });
 
   const handleImagesChange = (files: File[]) => {
     const newPreviews = files.map((file) => URL.createObjectURL(file));
+    setFiles(files);
     setPreviews((prev) => [...prev, ...newPreviews]);
   };
 
@@ -68,6 +75,8 @@ export default function MemeUploadForm() {
     e.preventDefault();
     console.log("Submitted meme details:", memeDetails);
     console.log("Number of images:", previews.length);
+
+    userUploadMeme.mutate();
     // Here you would typically send the data to your backend
   };
 
@@ -214,7 +223,9 @@ export default function MemeUploadForm() {
                   transition={{ delay: 0.2 }}
                   className="mt-6"
                 >
-                  <Button type="submit" className="w-full" size="lg">
+                  <Button type="submit"  
+                  disabled={userUploadMeme.isPending}
+                  className="w-full" size="lg">
                     Upload Memes
                   </Button>
                 </motion.div>

@@ -3,8 +3,13 @@ import { Meme } from "@/models/meme.model";
 import { User } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 
+interface UploadMemeProps {
+  meme: Meme;
+  user: User;
+}
+
 export class MemeService {
-  static async uploadMeme(meme: Meme, user: User) {
+  static async uploadMeme({ meme, user }: UploadMemeProps) {
     try {
       // collection name users
       const memeRef = doc(collection(firestore, "memes"));
@@ -12,9 +17,9 @@ export class MemeService {
       await setDoc(
         memeRef,
         {
-          id: '''''  // Use the generated document ID as the meme ID
+          id: meme.id, // Use the generated document ID as the meme ID
           title: meme.title,
-          imageUrl: meme.imageUrl,
+          imageUrls: meme.imageUrls,
           description: meme.description || "",
           attribution: meme.attribution,
           uploadedBy: {
@@ -43,6 +48,7 @@ export class MemeService {
 
       console.log("mem data stored in Firestore");
     } catch (error) {
+      console.log("this is called mem data not stored in Firestore", error);
       throw "Error storing user data";
     }
   }

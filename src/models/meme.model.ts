@@ -1,7 +1,7 @@
 export interface Meme {
-  id: string; // Unique identifier for the meme
+  id?: string; // Unique identifier for the meme
   title: string; // Title or caption of the meme
-  imageUrl: string; // URL of the uploaded meme image
+  imageUrls: string[]; // URL of the uploaded meme image
   description?: string; // Optional description of the meme
   attribution: {
     originalCreator: string; // Name of the meme's original creator

@@ -11,13 +11,13 @@ import SignIn from "@/pages/auth/SignIn";
 import { signOutuser } from "@/store/slice/auth-slice";
 import { useAppDispatch, useAppSelector } from "@/store/redux-state-hook";
 import UserDropdown from "./user-dropdown-memu";
+import { useNavigate } from "react-router";
 
 function Header() {
   const [isDialogOpen, setIsOpenDialog] = React.useState(false);
   const [isMemeDialogOpen, setIsMemeOpenDialog] = React.useState(false);
   const { isUser, status } = useAppSelector((state) => state.auth);
-
-
+  const navigate = useNavigate();
 
   const isAuthenticated =
     status.state === "success" && status.type === "google";
@@ -47,17 +47,15 @@ function Header() {
             )}
             <UserDropdown />
             <Button
-              onClick={() => {
-                dispatch(signOutuser());
+              onClick={function () {
+                if (!isUser) {
+                  // open login
+                  setIsOpenDialog(true);
+                } else if (isUser) {
+                  navigate("/upload");
+                }
+                // if not login open login dialog else upload dialog
               }}
-              // onClick={function () {
-              //   if (!isUser) {
-              //     // open login
-              //   } else if (isUser) {
-              //     // open upload dialog
-              //   }
-              //   // if not login open login dialog else upload dialog
-              // }}
               rounded={"full"}
               className=" relative !bg-transparent"
             >

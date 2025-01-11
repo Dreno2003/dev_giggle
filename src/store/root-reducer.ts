@@ -1,5 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import {persistedAuthReducer} from "./slice/auth-slice";
+import { persistStore } from "redux-persist";
 
 // Combine reducers
 const rootReducer = combineReducers({
@@ -15,6 +16,10 @@ const store = configureStore({
       serializableCheck: false, // Disable serializable checks for redux-persist
     }),
 });
+
+
+export const persistor = persistStore(store);
+
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

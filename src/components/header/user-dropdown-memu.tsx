@@ -16,18 +16,18 @@ import { CommonUtils } from "@/utils/common.utils";
 function UserDropdown() {
   const dispatch = useAppDispatch();
   const { status, user } = useAppSelector((state) => state.auth);
-  const avatarImg = user?.photoURL;
-  const displayName = user?.displayName;
+  const avatarImg = user?.photoURL ?? undefined;
+  const displayName = user?.displayName ?? undefined;
   const isLogginOut = status.state === "loading" && status.type === "signout";
 
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="outline-none !bg-transparent p-0 focus-visible:border-none !border-none focus:!ring-0">
+        <DropdownMenuTrigger className="!outline-none !bg-transparent p-0 focus-visible:border-none !border-none focus:!ring-0">
           <Avatar.Avatar >
             <Avatar.AvatarImage src={avatarImg} alt="user" />
             <Avatar.AvatarFallback>
-              {CommonUtils.getNameInitial(displayName ??  undefined)}
+              {CommonUtils.getNameInitial(displayName ?? "")}
             </Avatar.AvatarFallback>
           </Avatar.Avatar>
           {/* <FaRegUser className="size-5 md:size-[22.8px] dark:text-white text-gray-700" /> */}

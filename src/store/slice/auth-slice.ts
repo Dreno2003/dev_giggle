@@ -119,7 +119,7 @@ const authSlice = createSlice({
 const authPersistConfig = {
   key: "auth",
   storage,
-  blacklist: ["isUser", "error", "status", "isLoaded"],
+  // blacklist: ["isUser", "error", "status", "isLoaded"],
 };
 
 export const persistedAuthReducer = persistReducer(
