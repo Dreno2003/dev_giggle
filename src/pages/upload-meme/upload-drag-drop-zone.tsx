@@ -1,54 +1,70 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
-import { ImageIcon, Upload, X } from 'lucide-react'
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { ImageIcon, Upload, X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 interface FileDropZoneProps {
-  onImagesChange: (files: File[]) => void
-  previews: string[]
-  onRemove: (index: number) => void
+  onImagesChange: (files: File[]) => void;
+  previews: string[];
+  onRemove: (index: number) => void;
 }
 
-export function FileDropZone({ onImagesChange, previews, onRemove }: FileDropZoneProps) {
-  const [isDragging, setIsDragging] = useState(false)
+export function FileDropZone({
+  onImagesChange,
+  previews,
+  onRemove,
+}: FileDropZoneProps) {
+  const [isDragging, setIsDragging] = useState(false);
+  const [memeFiles, setMemeFiles] = useState<File[]>([]);
 
   const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   const handleDragIn = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(true)
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
 
   const handleDragOut = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(false)
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsDragging(false)
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
 
-    const files = Array.from(e.dataTransfer.files)
+    const files = Array.from(e.dataTransfer.files);
     if (files.length > 0) {
-      onImagesChange(files)
+      setMemeFiles((prev) => {
+        const newFiles = [...prev, ...files];
+
+        onImagesChange(newFiles);
+        return newFiles;
+      });
+      // setMemeFiles(files);
     }
-  }
+  };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || [])
+    const files = Array.from(e.target.files || []);
     if (files.length > 0) {
-      onImagesChange(files)
+      setMemeFiles((prev) => {
+        const newFiles = [...prev, ...files];
+
+        onImagesChange(newFiles);
+        return newFiles;
+      });
     }
-  }
+  };
 
   return (
     <div
@@ -68,7 +84,7 @@ export function FileDropZone({ onImagesChange, previews, onRemove }: FileDropZon
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="p-4 grid grid-cols-2 md:grid-cols-3 gap-4"
+            className="p-4 cur grid grid-cols-2 md:grid-cols-3 gap-4"
           >
             {previews.map((preview, index) => (
               <motion.div
@@ -79,12 +95,16 @@ export function FileDropZone({ onImagesChange, previews, onRemove }: FileDropZon
                 className="relative aspect-square"
               >
                 <img
+                  draggable={false}
                   src={preview}
                   alt={`Preview ${index + 1}`}
-                  className="w-full h-full object-cover rounded-lg"
+                  className="w-full h-full  object-cover rounded-lg"
                 />
                 <button
-                  onClick={() => onRemove(index)}
+                  onClick={() => {
+                    setMemeFiles((prev) => prev.filter((_, i) => i !== index));
+                    onRemove(index);
+                  }}
                   className="absolute top-2 right-2 bg-black/60 text-white p-1 rounded-full hover:bg-black/80 transition-colors"
                   aria-label={`Remove image ${index + 1}`}
                 >
@@ -151,6 +171,5 @@ export function FileDropZone({ onImagesChange, previews, onRemove }: FileDropZon
         )}
       </AnimatePresence>
     </div>
-  )
+  );
 }
-

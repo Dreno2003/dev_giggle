@@ -17,8 +17,13 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileDropZone } from "./upload-drag-drop-zone";
 import { TagInput } from "./tag-input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { InfoIcon, Sparkles } from "lucide-react";
+import { InfoIcon } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import useUploadMeme from "@/hooks/useUploadMeme.hook";
 import { useAppSelector } from "@/store/redux-state-hook";
 
@@ -33,11 +38,10 @@ export default function MemeUploadForm() {
     license: "",
     imageUrls: [""],
     source: "",
-    attribution:{
-      originalCreator: 'ok', // Name of the meme's original creator
-      license: 'string',// License type (e.g., "CC-BY 4.0")
- 
-    }
+    attribution: {
+      originalCreator: "ok", // Name of the meme's original creator
+      license: "string", // License type (e.g., "CC-BY 4.0")
+    },
   });
   const { user } = useAppSelector((state) => state.auth);
   const userUploadMeme = useUploadMeme({
@@ -47,9 +51,11 @@ export default function MemeUploadForm() {
   });
 
   const handleImagesChange = (files: File[]) => {
+    console.log(files);
     const newPreviews = files.map((file) => URL.createObjectURL(file));
     setFiles(files);
-    setPreviews((prev) => [...prev, ...newPreviews]);
+    setPreviews(newPreviews);
+    // setPreviews((prev) => [...prev, ...newPreviews]);
   };
 
   const handleRemoveImage = (index: number) => {
@@ -74,7 +80,6 @@ export default function MemeUploadForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Submitted meme details:", memeDetails);
-    console.log("Number of images:", previews.length);
 
     userUploadMeme.mutate();
     // Here you would typically send the data to your backend
@@ -104,12 +109,14 @@ export default function MemeUploadForm() {
             </p>
           </div>
 
-          <Card className="border-2">
+          <Card className="border">
             <CardContent className="p-6">
               <form onSubmit={handleSubmit}>
                 <Tabs defaultValue="upload" className="space-y-6">
-                  <TabsList className="grid grid-cols-2 w-full max-w-md mx-auto">
-                    <TabsTrigger value="upload">Upload</TabsTrigger>
+                  <TabsList className="grid grid-cols-2 gap-x-2 *:shadow-none w-full max-w-md mx-auto">
+                    <TabsTrigger value="upload" className="sha">
+                      Upload
+                    </TabsTrigger>
                     <TabsTrigger value="details">Details</TabsTrigger>
                   </TabsList>
 
@@ -121,9 +128,9 @@ export default function MemeUploadForm() {
                     />
                   </TabsContent>
 
-                  <TabsContent value="details">
-                    <ScrollArea className="h-[600px] pr-4">
-                      <div className="space-y-6">
+                  <TabsContent value="details" className="">
+                    <div className=" px-1  w-full ">
+                      <div className="space-y-4 md:space-y-5">
                         <div className="space-y-4">
                           <div>
                             <Label htmlFor="title">Title</Label>
@@ -159,19 +166,46 @@ export default function MemeUploadForm() {
                             <h3 className="text-lg font-semibold">
                               Attribution
                             </h3>
-                            <InfoIcon className="h-4 w-4 text-muted-foreground" />
+
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger className="!bg-white hover:border-white p-0 hover:border-none ">
+                                  <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Include </p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                           </div>
 
-                          <div className="space-y-4 rounded-xl border bg-card p-4">
-                            <div>
-                              <Label htmlFor="creator">Original Creator</Label>
-                              <Input
-                                id="creator"
-                                name="creator"
-                                value={memeDetails.creator}
-                                onChange={handleInputChange}
-                                placeholder="Credit the original creator"
-                              />
+                          <div className="space-y-5  w-full rounded-xl  bg-card ">
+                            <div className="flex w-full md:gap-x-4 flex-col md:flex-row gap-y-5 md:gap-y-0">
+                              <div className="w-full">
+                                <Label htmlFor="creator">
+                                  Original Creator
+                                </Label>
+                                <Input
+                                  id="creator"
+                                  name="creator"
+                                  className="w-full"
+                                  value={memeDetails.creator}
+                                  onChange={handleInputChange}
+                                  placeholder="Credit the original creator"
+                                />
+                              </div>
+
+                              <div className="w-full">
+                                <Label htmlFor="source">Source URL</Label>
+                                <Input
+                                  id="source"
+                                  name="source"
+                                  className="w-full"
+                                  value={memeDetails.source}
+                                  onChange={handleInputChange}
+                                  placeholder="Link to the original content"
+                                />
+                              </div>
                             </div>
 
                             <div>
@@ -199,21 +233,10 @@ export default function MemeUploadForm() {
                                 </SelectContent>
                               </Select>
                             </div>
-
-                            <div>
-                              <Label htmlFor="source">Source URL</Label>
-                              <Input
-                                id="source"
-                                name="source"
-                                value={memeDetails.source}
-                                onChange={handleInputChange}
-                                placeholder="Link to the original content"
-                              />
-                            </div>
                           </div>
                         </div>
                       </div>
-                    </ScrollArea>
+                    </div>
                   </TabsContent>
                 </Tabs>
 
@@ -223,9 +246,12 @@ export default function MemeUploadForm() {
                   transition={{ delay: 0.2 }}
                   className="mt-6"
                 >
-                  <Button type="submit"  
-                  disabled={userUploadMeme.isPending}
-                  className="w-full" size="lg">
+                  <Button
+                    type="submit"
+                    disabled={userUploadMeme.isPending}
+                    className="w-full"
+                    size="lg"
+                  >
                     Upload Memes
                   </Button>
                 </motion.div>

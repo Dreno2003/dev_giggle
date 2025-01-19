@@ -20,6 +20,7 @@ export default function useUploadMeme({
   return useMutation({
     mutationFn: async () => {
       meme.id ??= CommonUtils.generateId();
+
       // memeId = CommonUtils.generateId()
       meme.imageUrls = meme.imageUrls || [];
 
@@ -36,10 +37,10 @@ export default function useUploadMeme({
             file,
             storagePath,
           });
-
           meme.imageUrls.push(images);
-        } catch (error) {
-          console.log('this is called error from uploding image', error)
+        } catch (error:any) {
+          throw new Error(error)
+          // console.log("this is called error from uploding image", error);
         }
       }
 

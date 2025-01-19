@@ -26,7 +26,7 @@ function UserDropdown() {
         <DropdownMenuTrigger className="!outline-none !bg-transparent p-0 focus-visible:border-none !border-none focus:!ring-0">
           <Avatar.Avatar >
             <Avatar.AvatarImage src={avatarImg} alt="user" />
-            <Avatar.AvatarFallback>
+            <Avatar.AvatarFallback className="text-gray-800">
               {CommonUtils.getNameInitial(displayName ?? "")}
             </Avatar.AvatarFallback>
           </Avatar.Avatar>
