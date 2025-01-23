@@ -37,11 +37,9 @@ export class UserService {
   static async getUser(uid: string) {
     try {
       const docRef = doc(db, "users", uid);
-      console.log("this is called get user service top");
       const res = await getDoc(docRef);
       if (res.exists()) {
         const data = res.data();
-        console.log("this is called data main", data);
         return data;
       } else {
         throw new Error("No such document");

@@ -1,7 +1,16 @@
 import { db } from "@/config/firebase.config";
 import { Meme } from "@/models/meme.model";
 import { User } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
+
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  limit,
+  orderBy,
+  setDoc,
+} from "firebase/firestore";
 
 interface UploadMemeProps {
   meme: Meme;
@@ -47,6 +56,21 @@ export class MemeService {
       );
     } catch (error) {
       throw "Error storing user data";
+    }
+  }
+
+  static async get() {
+    try {
+      const initDocRef = query(
+        collection(db, "memes"),
+        orderBy("createdAt"),
+        limit(100)
+      );
+      const initDocSnapShot = await getDocs(initDocRef);
+
+      // get last visible doc
+    } catch (error) {
+      throw new Error(`get user error, ${error}`);
     }
   }
 }

@@ -2,7 +2,7 @@ import MainLayout from "@/layout/main-layout";
 import Home from "@/pages/home/home";
 import { createBrowserRouter } from "react-router";
 import PrivateRoute from "@/components/private-route";
-import UploadMain from "@/pages/upload-meme/upload-main";
+import UploadMain from "@/pages/upload-meme/upload-meme-main";
 // const HomeScreen = lazy(() => import("@/pages/home/HomeScreen"));
 // const Analytics = lazy(() => import("@/pages/analytics/AnalyticsMain"));
 // const Settings = lazy(() => import("@/pages/settings/SettingsMain"));
