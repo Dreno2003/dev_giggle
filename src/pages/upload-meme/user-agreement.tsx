@@ -1,11 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { FileText, Shield, Image } from "lucide-react";
-// import Link from "next/link"
 import { Link } from "react-router";
 import { company_name } from "@/constants/global.constants";
+import { useUpdateUserAgreement } from "@/hooks/useUpdateUserAgreement.hook";
 import * as React from "react";
+import { useAppSelector } from "@/store/redux-state-hook";
 
 // TODO this will be a stepper when users clicks aggre move to step two which is to upload
 
@@ -14,7 +14,16 @@ interface UserAgreementProps {
 }
 export default function UserAgreement({ onSelectChecked }: UserAgreementProps) {
   const [agreed, setAgreed] = React.useState(false);
+  const { user } = useAppSelector((state) => state.auth);
+  const updateUserAgreement = useUpdateUserAgreement(user ? user?.uid : "");
 
+  async function handleUpdateUserAgreement(e: React.ChangeEvent) {
+    e.preventDefault();
+    await updateUserAgreement.mutateAsync();
+    setAgreed((prev) => {
+      return !prev;
+    });
+  }
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="text-center mb-8">
@@ -104,8 +113,8 @@ export default function UserAgreement({ onSelectChecked }: UserAgreementProps) {
             </div>
             <h2 className="text-lg font-semibold mb-2">Media</h2>
             <p className="text-gray-600 text-sm mb-4">
-              {company_name} offers the largest range of media types. Over 3 million+
-              high quality stock photos, vectors, illustrations, music.
+              {company_name} offers the largest range of media types. Over 3
+              million+ high quality stock photos, vectors, illustrations, music.
             </p>
             <Link
               to="#"
@@ -138,9 +147,7 @@ export default function UserAgreement({ onSelectChecked }: UserAgreementProps) {
             checked={agreed}
             className={`size-4 cursor-pointer`}
             id="agree"
-            onChange={function () {
-              setAgreed(!agreed);
-            }}
+            onChange={handleUpdateUserAgreement}
           />
           <label
             htmlFor="agree"

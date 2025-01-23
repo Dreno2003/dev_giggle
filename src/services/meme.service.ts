@@ -1,4 +1,4 @@
-import { firestore } from "@/config/firebase.config";
+import { db } from "@/config/firebase.config";
 import { Meme } from "@/models/meme.model";
 import { User } from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
@@ -12,7 +12,7 @@ export class MemeService {
   static async uploadMeme({ meme, user }: UploadMemeProps) {
     try {
       // collection name users
-      const memeRef = doc(collection(firestore, "memes"));
+      const memeRef = doc(collection(db, "memes"));
 
       await setDoc(
         memeRef,
@@ -45,10 +45,7 @@ export class MemeService {
         },
         { merge: true }
       );
-
-      console.log("mem data stored in Firestore");
     } catch (error) {
-      console.log("this is called mem data not stored in Firestore", error);
       throw "Error storing user data";
     }
   }

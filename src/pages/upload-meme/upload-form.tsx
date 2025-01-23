@@ -3,7 +3,6 @@ import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileUtils } from "@/utils/file.utils";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -51,7 +50,7 @@ export default function MemeUploadForm() {
   });
 
   const handleImagesChange = (files: File[]) => {
-    console.log(files);
+ 
     const newPreviews = files.map((file) => URL.createObjectURL(file));
     setFiles(files);
     setPreviews(newPreviews);

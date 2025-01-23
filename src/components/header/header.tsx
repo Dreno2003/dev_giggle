@@ -8,7 +8,6 @@ import {
 import { Button } from "../ui/button";
 import * as React from "react";
 import SignIn from "@/pages/auth/SignIn";
-import { signOutuser } from "@/store/slice/auth-slice";
 import { useAppDispatch, useAppSelector } from "@/store/redux-state-hook";
 import UserDropdown from "./user-dropdown-memu";
 import { useNavigate } from "react-router";
@@ -45,7 +44,7 @@ function Header() {
                 Login
               </Button>
             )}
-            <UserDropdown />
+            {isUser && <UserDropdown />}
             <Button
               onClick={function () {
                 if (!isUser) {
@@ -72,12 +71,16 @@ function Header() {
         }}
         open={isDialogOpen}
       >
-        <DialogContent className="h-[20rem] !rounded-2xl">
+        <DialogContent className="h-[20rem]  md:w-[20rem] !rounded-2xl">
+          <div className="h-4 w-full bg-black relative border-b-4 border-gray-200  top-1" />
           <DialogHeader>
-            <DialogTitle>Join and create humor for devs.</DialogTitle>
+            <DialogTitle className="text-center">
+              Join The Kings of Humor.
+            </DialogTitle>
           </DialogHeader>
-
-          <SignIn />
+          <div className="">
+            <SignIn />
+          </div>
         </DialogContent>
       </Dialog>
 

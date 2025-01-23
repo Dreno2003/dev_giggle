@@ -8,7 +8,7 @@ function HeroSection() {
   return (
     <>
       <section className="  relative px-6 md:px-0  h-[435px] bg-gradient-to-r from-purple-950 to-black">
-      <Header />
+        <Header />
         <img
           src={FileUtils.absoluteUrl("/images/smile_emoji.png")}
           className="absolute hidden md:block md:size-32 left-4 top-16"
@@ -21,10 +21,10 @@ function HeroSection() {
         {/* <div  className='bg-green-300 inset-0 top-0 absolute w-screen h-full'/> */}
         <div className="cosntainer flex flex-col items-center justify-center h-full space-y-6 text-center">
           <h1 className="text-4xl font-hanalei font-bold text-white sm:text-5xl md:text-6xl">
-            Developer & Designer Memes
+            Meme Lane
           </h1>
           <p className="max-w-2xl text-lg text-white/90">
-            Find and share the best memes for developers and designers
+            Find and share the best memes.
           </p>
           <div className="relative w-full max-w-2xl">
             <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
