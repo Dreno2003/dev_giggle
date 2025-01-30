@@ -2,83 +2,85 @@ import { useState } from "react";
 import { Download, Copy, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Meme } from "@/models/meme.model";
 
-interface Meme {
-  id: number;
-  title: string;
-  imageUrl: string;
-  tags: string[];
-  category: string;
+// interface Meme {
+//   id: number;
+//   title: string;
+//   imageUrl: string;
+//   tags: string[];
+//   category: string;
+// }
+
+// const MOCK_MEMES: Meme[] = [
+
+//   {
+//     id: 2,
+//     title: "CSS Pain",
+//     imageUrl:
+//       "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
+//     tags: ["CSS", "Frontend"],
+//     category: "Frontend",
+//   },
+
+//   {
+//     id: 3,
+//     title: "CSS Pain",
+//     imageUrl:
+//       "https://cdn.pixabay.com/photo/2021/10/02/11/43/empire-state-building-6675010_640.jpg",
+//     tags: ["CSS", "Frontend"],
+//     category: "Frontend",
+//   },
+//     {
+//     id: 5,
+//     title: "CSS Pain",
+//     imageUrl:
+//       "https://cdn.pixabay.com/photo/2021/10/02/11/43/empire-state-building-6675010_640.jpg",
+//     tags: ["CSS", "Frontend"],
+//     category: "Frontend",
+//   },
+
+//   {
+//     id: 5,
+//     title: "CSS Pain",
+//     imageUrl:
+//       "https://cdn.pixabay.com/photo/2021/10/02/11/43/empire-state-building-6675010_640.jpg",
+//     tags: ["CSS", "Frontend"],
+//     category: "Frontend",
+//   },
+//   {
+//     id: 6,
+//     title: "CSS Pain",
+//     imageUrl:
+//       "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
+//     tags: ["CSS", "Frontend"],
+//     category: "Frontend",
+//   },
+//     {
+//     id: 6,
+//     title: "CSS Pain",
+//     imageUrl:
+//       "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
+//     tags: ["CSS", "Frontend"],
+//     category: "Frontend",
+//   },
+//   {
+//     id: 6,
+//     title: "CSS Pain",
+//     imageUrl:
+//       "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
+//     tags: ["CSS", "Frontend"],
+//     category: "Frontend",
+//   },
+//   // Add more mock memes here
+// ];
+interface MemeGridProps {
+  Memes: Meme[];
+  isLoading: boolean;
 }
-
-const MOCK_MEMES: Meme[] = [
-
-  {
-    id: 2,
-    title: "CSS Pain",
-    imageUrl:
-      "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
-    tags: ["CSS", "Frontend"],
-    category: "Frontend",
-  },
-
-  {
-    id: 3,
-    title: "CSS Pain",
-    imageUrl:
-      "https://cdn.pixabay.com/photo/2021/10/02/11/43/empire-state-building-6675010_640.jpg",
-    tags: ["CSS", "Frontend"],
-    category: "Frontend",
-  },
-    {
-    id: 5,
-    title: "CSS Pain",
-    imageUrl:
-      "https://cdn.pixabay.com/photo/2021/10/02/11/43/empire-state-building-6675010_640.jpg",
-    tags: ["CSS", "Frontend"],
-    category: "Frontend",
-  },
-
-  {
-    id: 5,
-    title: "CSS Pain",
-    imageUrl:
-      "https://cdn.pixabay.com/photo/2021/10/02/11/43/empire-state-building-6675010_640.jpg",
-    tags: ["CSS", "Frontend"],
-    category: "Frontend",
-  },
-  {
-    id: 6,
-    title: "CSS Pain",
-    imageUrl:
-      "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
-    tags: ["CSS", "Frontend"],
-    category: "Frontend",
-  },
-    {
-    id: 6,
-    title: "CSS Pain",
-    imageUrl:
-      "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
-    tags: ["CSS", "Frontend"],
-    category: "Frontend",
-  },
-  {
-    id: 6,
-    title: "CSS Pain",
-    imageUrl:
-      "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
-    tags: ["CSS", "Frontend"],
-    category: "Frontend",
-  },
-  // Add more mock memes here
-];
-
-export default function MemeGrid() {
+export default function MemeGrid(props: MemeGridProps) {
   const [selectedMeme, setSelectedMeme] = useState<Meme | null>(null);
   const [heights, setHeights] = useState<number[]>([]);
-
-
 
   // const handleImageLoad = (event:HTMLImageElement, index:number) => {
   //   const { naturalHeight, naturalWidth } = event.target;
@@ -121,20 +123,16 @@ export default function MemeGrid() {
     }
   };
 
+  if (props.isLoading) {
+    return "loading";
+  }
 
   return (
     <>
-
-    
-
-
-
-
-    <div className="columns-2 md:columns-4 gap-4 space-y-4">
-
-      {/* <div className="hidden  flex-wrap"> */}
-      {/* <div className=" grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"> */}
-        {MOCK_MEMES.map((meme) => (
+      <div className="columns-2 md:columns-4 gap-4 space-y-4">
+        {/* <div className="hidden  flex-wrap"> */}
+        {/* <div className=" grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"> */}
+        {props?.Memes.map((meme) => (
           <div
             onClick={() => {
               setSelectedMeme(meme);
@@ -148,8 +146,17 @@ export default function MemeGrid() {
                 setSelectedMeme(meme);
               }}
             >
+              {/* {JSON.stringify(meme.imageUrls)} */}
+              {/* {meme.imageUrls.map((image, index) => (
+                
+              
+              } */}
+
+           
+
               <img
-                src={meme.imageUrl}
+                // src=""
+                src={meme?.imageUrls[0]}
                 alt={meme.title}
                 width={400}
                 // height={400}
@@ -168,7 +175,7 @@ export default function MemeGrid() {
                       className="h-8 w-8"
                       onClick={(e) => {
                         e.stopPropagation();
-                        copyImage(meme.imageUrl);
+                        // copyImage(meme.imageUrl);
                       }}
                     >
                       <Copy className="h-4 w-4" />
@@ -179,7 +186,7 @@ export default function MemeGrid() {
                       className="h-8 w-8"
                       onClick={(e) => {
                         e.stopPropagation();
-                        downloadImage(meme.imageUrl, meme.title);
+                        // downloadImage(meme., meme.title);
                       }}
                     >
                       <Download className="h-4 w-4" />
@@ -192,7 +199,6 @@ export default function MemeGrid() {
         ))}
       </div>
 
-    
       <Dialog open={!!selectedMeme} onOpenChange={() => setSelectedMeme(null)}>
         <DialogContent className="max-w-3xl md:max-w-xl h-auto md:max-h-[40rem]  ">
           {selectedMeme && (
@@ -200,7 +206,7 @@ export default function MemeGrid() {
               <Button
                 size="icon"
                 variant="destructive"
-                rounded={'full'}
+                rounded={"full"}
                 className="absolute -right-6 -top-20 z-10"
                 onClick={() => setSelectedMeme(null)}
               >
@@ -208,7 +214,8 @@ export default function MemeGrid() {
               </Button>
               <div className="space-y-3">
                 <img
-                  src={selectedMeme.imageUrl}
+                  src={""}
+                  // src={selectedMeme.imageUrl}
                   alt={selectedMeme.title}
                   width={800}
                   height={700}
@@ -232,16 +239,16 @@ export default function MemeGrid() {
                   </div>
                   <div className="flex gap-2">
                     <Button
-                      onClick={() => copyImage(selectedMeme.imageUrl)}
+                      // onClick={() => copyImage(selectedMeme.imageUrl)}
                       variant="outline"
                     >
                       <Copy className="h-4 w-4 mr-2" />
                       Copy
                     </Button>
                     <Button
-                      onClick={() =>
-                        downloadImage(selectedMeme.imageUrl, selectedMeme.title)
-                      }
+                    // onClick={() =>
+                    //   // downloadImage(selectedMeme.imageUrl, selectedMeme.title)
+                    // }
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Download

@@ -33,7 +33,7 @@ function HeroSection() {
               className="w-full pl-10 bg-background/95 h-12"
             />
           </div>
-          <div className="flex flex-wrap justify-center gap-2">
+          {/* <div className="flex flex-wrap justify-center gap-2">
             {["JavaScript", "CSS", "React", "UI/UX", "Git", "Python"].map(
               (tag) => (
                 <span
@@ -44,7 +44,7 @@ function HeroSection() {
                 </span>
               )
             )}
-          </div>
+          </div> */}
         </div>
       </section>
     </>
