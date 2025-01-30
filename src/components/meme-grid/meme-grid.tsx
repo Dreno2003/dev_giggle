@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Download, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Meme } from "@/models/meme.model";
+import { SyncLoader } from "react-spinners";
 import MemeFullView from "./meme-full-view";
 
 // const MOCK_MEMES: Meme[] = [
@@ -70,6 +71,8 @@ interface MemeGridProps {
   Memes: Meme[];
   isLoading: boolean;
   onLoadMoreMemes: () => void;
+  hasNextPage: boolean;
+  isFetchingNext: boolean;
 }
 export default function MemeGrid(props: MemeGridProps) {
   const [selectedMeme, setSelectedMeme] = useState<Meme | null>(null);
@@ -159,11 +162,22 @@ export default function MemeGrid(props: MemeGridProps) {
         ))}
       </div>
 
-      <div>
-        {/* loadmore btutto */}
-        <Button onClick={props.onLoadMoreMemes}>Load more</Button>
+      <div className="mt-6 w-max mx-auto">
+        {props.hasNextPage && (
+          <div >
+            {/* loadmore btutto */}
+            <Button
+              disabled={props.isFetchingNext || !props.hasNextPage}
+              onClick={props.onLoadMoreMemes}
+            >
+              Load more humor
+            </Button>
+          </div>
+        )}
+        {props.isFetchingNext && (
+          <SyncLoader className="text-gray-800 mt-4 text-center" size={11} />
+        )}
       </div>
-
       <MemeFullView
         selectedMeme={selectedMeme}
         setSelectedMeme={setSelectedMeme}

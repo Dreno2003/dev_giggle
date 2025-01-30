@@ -14,7 +14,6 @@ import {
   orderBy,
   setDoc,
 } from "firebase/firestore";
-import { AnyObject } from "yup";
 
 interface UploadMemeProps {
   meme: Meme;
@@ -64,8 +63,9 @@ export class MemeService {
   }
 
   static async get({ pageParam  }: {pageParam?: QueryDocumentSnapshot<DocumentData> }) {
-    // static async get({ pageParam  }: {pageParam:QueryDocumentSnapshot<DocumentData, DocumentData>}) {
-    const pageSize = 100;
+    const pageSize = 8;
+    // TODOset page size to 100 on prod
+    // const pageSize = 100;
     const collectionRef = collection(db, "memes");
     let q;
 
@@ -77,11 +77,9 @@ export class MemeService {
         startAfter(pageParam),
         limit(pageSize)
       );
-      console.log('this is called pageParam', pageParam,q)
     } else {
       // Fetch the first page
       q = query(collectionRef, orderBy("metadata.createdAt"), limit(pageSize));
-      console.log('this is called pageParam first page',pageParam,q)
     }
 
     const snapshot = await getDocs(q);
@@ -91,7 +89,6 @@ export class MemeService {
 
     // Map Firestore documents to a usable format
     const data = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    console.log('this is called service data', data)
     const firstVisible = snapshot.docs[0];
     return {
       data,
