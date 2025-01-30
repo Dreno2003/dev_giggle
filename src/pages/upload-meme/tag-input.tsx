@@ -1,5 +1,3 @@
-'use client'
-
 import { useState } from 'react'
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -41,9 +39,9 @@ export function TagInput({ tags, onChange }: TagInputProps) {
       />
       <div className="flex flex-wrap gap-2 min-h-[2rem]">
         <AnimatePresence>
-          {tags.map(tag => (
+          {tags.map((tag, index) => (
             <motion.div
-              key={tag}
+              key={index}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}

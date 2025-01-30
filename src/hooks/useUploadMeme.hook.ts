@@ -4,6 +4,7 @@ import { MemeService } from "@/services/meme.service";
 import { CommonUtils } from "@/utils/common.utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { User } from "firebase/auth";
+import { FileUtils } from "@/utils/file.utils";
 
 interface UseUploadMemeProps {
   meme: Meme;
@@ -33,13 +34,19 @@ export default function useUploadMeme({
         const storagePath = `memes/${user.uid}/${filename}`;
 
         try {
-          const images = await CloudStorageService.store({
+          const compressedImage = await FileUtils.compressImage(
             file,
+            8500,
+            1920
+          );
+
+          const images = await CloudStorageService.store({
+            file: compressedImage!,
             storagePath,
           });
           meme.imageUrls.push(images);
-        } catch (error:any) {
-          throw new Error(error)
+        } catch (error: any) {
+          throw new Error(error);
           // console.log("this is called error from uploding image", error);
         }
       }
@@ -47,7 +54,7 @@ export default function useUploadMeme({
       await MemeService.uploadMeme({ meme, user });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["memes"] });
+      queryClient.invalidateQueries({ queryKey: ["paginated_memes"] });
     },
   });
 }

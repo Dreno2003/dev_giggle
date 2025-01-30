@@ -5,11 +5,17 @@ import clsx from "clsx";
 
 interface PrevButtonProps {
   className?: string;
+  onClick: () => void;
 }
 function PrevButton(props: PrevButtonProps) {
   return (
     <>
-      <Button size={"sm"} variant={"ghost"} className={clsx(props.className)}>
+      <Button
+        size={"sm"}
+        onClick={props.onClick}
+        variant={"ghost"}
+        className={clsx(props.className)}
+      >
         <ChevronLeft />
         back
       </Button>

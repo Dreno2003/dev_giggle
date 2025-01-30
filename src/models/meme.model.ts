@@ -3,10 +3,9 @@ export interface Meme {
   title: string; // Title or caption of the meme
   imageUrls: string[]; // URL of the uploaded meme image
   description?: string; // Optional description of the meme
-  attribution: {
+  attribution?: {
     originalCreator: string; // Name of the meme's original creator
-    license: string; // License type (e.g., "CC-BY 4.0")
-    source?: string; // Optional link to the original source
+    source: string; // Optional link to the original source
   };
   uploadedBy: {
     userId: string; // Uploader's unique Firebase ID

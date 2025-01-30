@@ -3,7 +3,7 @@ import { MemeService } from '@/services/meme.service';
 
 export const usePaginatedCollection = () => {
   return useInfiniteQuery({
-    queryKey: ["paginatedCollection"], // Query key
+    queryKey: ["paginated_memes"], // Query key
     queryFn: ({ pageParam  }) => MemeService.get({ pageParam }), // Fetch function
     initialPageParam: 1, // Initial page parameter
     getNextPageParam: (lastPage) => lastPage.lastVisible || undefined, // Set the next page's starting point
