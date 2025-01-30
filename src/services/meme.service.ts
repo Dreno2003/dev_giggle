@@ -63,7 +63,7 @@ export class MemeService {
     }
   }
 
-  static async get({ pageParam  }: {pageParam:any}) {
+  static async get({ pageParam  }: {pageParam?: QueryDocumentSnapshot<DocumentData> }) {
     // static async get({ pageParam  }: {pageParam:QueryDocumentSnapshot<DocumentData, DocumentData>}) {
     const pageSize = 100;
     const collectionRef = collection(db, "memes");

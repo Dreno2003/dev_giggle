@@ -1,13 +1,12 @@
-import MemeGrid from "@/components/meme-grid";
+import MemeGrid from "@/components/meme-grid/meme-grid";
 import CategoryTab from "./category-tab";
 import { usePaginatedCollection } from "@/hooks/useGetMemes.hook";
 import { Meme } from "@/models/meme.model";
 
 function ContentSection() {
-  const { data, isLoading } = usePaginatedCollection();
+  const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = usePaginatedCollection();
   const mainData = data?.pages.map((page: any) => page as { data: Meme[] });
- 
-  // console.log("this is called data", data.pages.map((page) => page.data));
+
   return (
     <>
       {/* Main Content */}
@@ -18,7 +17,7 @@ function ContentSection() {
         </div>
         <MemeGrid
           isLoading={isLoading}
-          Memes={mainData?.flatMap((page) => page.data)}
+          Memes={mainData ? mainData.flatMap((page) => page.data) : []}
         />
       </section>
     </>
