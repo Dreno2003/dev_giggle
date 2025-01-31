@@ -2,6 +2,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Download, X } from "lucide-react";
+import { FileUtils } from "@/utils/file.utils";
 import {
   Carousel,
   CarouselContent,
@@ -29,22 +30,58 @@ function MemeFullView(props: MemeFullViewProps) {
   //   }
   // };
 
-  const downloadImage = async (url: string, title: string) => {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = `${title}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (err) {
-      console.error("Failed to download image:", err);
-    }
-  };
+  // const downloadImage = async (url: string, title: string) => {
+  //   try {
+  //     const response = await fetch(url);
+  //     const blob = await response.blob();
+  //     const blobUrl = window.URL.createObjectURL(blob);
+  //     const link = document.createElement("a");
+  //     link.href = blobUrl;
+  //     link.download = `${title}_meme_lane.png`;
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+  //     window.URL.revokeObjectURL(blobUrl);
+  //   } catch (err) {
+  //     console.error("Failed to download image:", err);
+  //   }
+  // };
+
+  // const downloadImagesAsZip = async (urls: string[], zipFileName: string) => {
+  //   const zip = new JSZip();
+
+  //   try {
+  //     for (let i = 0; i < urls.length; i++) {
+  //       const url = urls[i];
+  //       const response = await fetch(url);
+
+  //       if (!response.ok) {
+  //         throw new Error(
+  //           `Failed to fetch image ${url}: ${response.statusText}`
+  //         );
+  //       }
+
+  //       const blob = await response.blob();
+  //       const fileName = `image${i + 1}.png`;
+  //       zip.file(fileName, blob, { binary: true });
+  //     }
+
+  //     const content = await zip.generateAsync({ type: "blob" });
+  //     const link = document.createElement("a");
+  //     link.href = URL.createObjectURL(content);
+  //     link.download = `${zipFileName}_meme_lane.zip`;
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+  //     URL.revokeObjectURL(link.href);
+  //   } catch (err) {
+  //     console.error("Failed to download images and create ZIP:", err);
+  //   }
+  // };
+
+  // Example usage:
+
+  // downloadImagesAsZip(imageUrls, 'images');
 
   return (
     <div>
@@ -81,10 +118,12 @@ function MemeFullView(props: MemeFullViewProps) {
                           {props.selectedMeme &&
                             props.selectedMeme.imageUrls.length > 1 && (
                               <div className="right-4 flex gap-x-2  ml-2 absolute bottom-4 ">
-
                                 <Download
                                   onClick={() =>
-                                    downloadImage(imgUrl, `${imgUrl}_title`)
+                                    FileUtils.downloadImage(
+                                      imgUrl,
+                                      `${imgUrl}_title`
+                                    )
                                   }
                                   className="h-4 w-4  cursor-pointer "
                                 />
@@ -138,9 +177,22 @@ function MemeFullView(props: MemeFullViewProps) {
                       Copy
                     </Button> */}
                     <Button
-                    // onClick={() =>
-                    //   // downloadImage(selectedMeme.imageUrl, selectedMeme.title)
-                    // }
+                      onClick={function (e) {
+                        e.stopPropagation;
+                        if (props.selectedMeme) {
+                          if (props.selectedMeme.imageUrls.length > 1) {
+                            FileUtils.downloadImagesAsZip(
+                              props.selectedMeme.imageUrls,
+                              props.selectedMeme.title
+                            );
+                          } else {
+                            FileUtils.downloadImage(
+                              props.selectedMeme.imageUrls[0],
+                              props.selectedMeme.title
+                            );
+                          }
+                        }
+                      }}
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Download{" "}

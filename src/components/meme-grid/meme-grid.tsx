@@ -1,72 +1,12 @@
 import { useState } from "react";
-import { Download, Copy } from "lucide-react";
+import { Download, Copy,Share } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Meme } from "@/models/meme.model";
 import { SyncLoader } from "react-spinners";
 import MemeFullView from "./meme-full-view";
+import { FileUtils } from "@/utils/file.utils";
 
-// const MOCK_MEMES: Meme[] = [
-
-//   {
-//     id: 2,
-//     title: "CSS Pain",
-//     imageUrl:
-//       "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
-//     tags: ["CSS", "Frontend"],
-//     category: "Frontend",
-//   },
-
-//   {
-//     id: 3,
-//     title: "CSS Pain",
-//     imageUrl:
-//       "https://cdn.pixabay.com/photo/2021/10/02/11/43/empire-state-building-6675010_640.jpg",
-//     tags: ["CSS", "Frontend"],
-//     category: "Frontend",
-//   },
-//     {
-//     id: 5,
-//     title: "CSS Pain",
-//     imageUrl:
-//       "https://cdn.pixabay.com/photo/2021/10/02/11/43/empire-state-building-6675010_640.jpg",
-//     tags: ["CSS", "Frontend"],
-//     category: "Frontend",
-//   },
-
-//   {
-//     id: 5,
-//     title: "CSS Pain",
-//     imageUrl:
-//       "https://cdn.pixabay.com/photo/2021/10/02/11/43/empire-state-building-6675010_640.jpg",
-//     tags: ["CSS", "Frontend"],
-//     category: "Frontend",
-//   },
-//   {
-//     id: 6,
-//     title: "CSS Pain",
-//     imageUrl:
-//       "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
-//     tags: ["CSS", "Frontend"],
-//     category: "Frontend",
-//   },
-//     {
-//     id: 6,
-//     title: "CSS Pain",
-//     imageUrl:
-//       "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
-//     tags: ["CSS", "Frontend"],
-//     category: "Frontend",
-//   },
-//   {
-//     id: 6,
-//     title: "CSS Pain",
-//     imageUrl:
-//       "https://cdn.pixabay.com/photo/2024/09/20/01/37/dubai-creek-9060098_640.jpg",
-//     tags: ["CSS", "Frontend"],
-//     category: "Frontend",
-//   },
-//   // Add more mock memes here
-// ];
 interface MemeGridProps {
   Memes: Meme[];
   isLoading: boolean;
@@ -76,6 +16,7 @@ interface MemeGridProps {
 }
 export default function MemeGrid(props: MemeGridProps) {
   const [selectedMeme, setSelectedMeme] = useState<Meme | null>(null);
+  const [hoverselectedMeme, setHoverSelectedMeme] = useState<Meme | null>(null);
   // const [heights, setHeights] = useState<number[]>([]);
 
   // const handleImageLoad = (event:HTMLImageElement, index:number) => {
@@ -99,7 +40,16 @@ export default function MemeGrid(props: MemeGridProps) {
         {/* <div className=" grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"> */}
         {props?.Memes.map((meme) => (
           <div
+            onMouseEnter={() => {
+              setHoverSelectedMeme(meme);
+              // setSelectedMeme(meme);
+            }}
+            onMouseLeave={() => {
+              setHoverSelectedMeme(null);
+              // setSelectedMeme(null);
+            }}
             onClick={() => {
+              // isOpenDialog, setIsOpenDialog
               setSelectedMeme(meme);
             }}
             key={meme.id}
@@ -111,12 +61,6 @@ export default function MemeGrid(props: MemeGridProps) {
                 setSelectedMeme(meme);
               }}
             >
-              {/* {JSON.stringify(meme.imageUrls)} */}
-              {/* {meme.imageUrls.map((image, index) => (
-                
-              
-              } */}
-
               <img
                 // src=""
                 src={meme?.imageUrls[0]}
@@ -127,7 +71,20 @@ export default function MemeGrid(props: MemeGridProps) {
               />
 
               <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity bg-gradient-to-t from-black/60 to-transparent p-4">
-                <div className="w-full flex justify-between items-center">
+                {/* <p className="absolute top-10">
+                  {hoverselectedMeme &&
+                    hoverselectedMeme?.imageUrls.length > 1 && (
+                      <span className="text-white">
+                        {" "}
+                        {hoverselectedMeme?.imageUrls.length}
+                      </span>
+                    )}
+                </p> */}
+                {hoverselectedMeme &&
+                  hoverselectedMeme?.imageUrls.length > 1 && (
+                    <Copy className="h-4 w-4 absolute top-4 text-gray-300 " />
+                  )}
+                <div className="w-full relative flex justify-between items-center">
                   <h3 className="text-white font-medium truncate">
                     {meme.title}
                   </h3>
@@ -138,18 +95,34 @@ export default function MemeGrid(props: MemeGridProps) {
                       className="h-8 w-8"
                       onClick={(e) => {
                         e.stopPropagation();
+                        // TODO implement share
                         // copyImage(meme.imageUrl);
                       }}
                     >
-                      <Copy className="h-4 w-4" />
+                      <Share className="h-4 w-4" />
                     </Button>
                     <Button
                       size="icon"
                       variant="secondary"
                       className="h-8 w-8"
-                      onClick={(e) => {
+                      onClick={function (e) {
                         e.stopPropagation();
-                        // downloadImage(meme., meme.title);
+                        // const images = props.Memes.flatMap(
+                        //   (meme) => meme.imageUrls
+                        // );
+                        if (hoverselectedMeme) {
+                          if (hoverselectedMeme.imageUrls.length > 1) {
+                            FileUtils.downloadImagesAsZip(
+                              hoverselectedMeme.imageUrls,
+                              hoverselectedMeme.title
+                            );
+                          } else {
+                            FileUtils.downloadImage(
+                              hoverselectedMeme.imageUrls[0],
+                              hoverselectedMeme.title
+                            );
+                          }
+                        }
                       }}
                     >
                       <Download className="h-4 w-4" />
@@ -164,7 +137,7 @@ export default function MemeGrid(props: MemeGridProps) {
 
       <div className="mt-6 w-max mx-auto">
         {props.hasNextPage && (
-          <div >
+          <div>
             {/* loadmore btutto */}
             <Button
               disabled={props.isFetchingNext || !props.hasNextPage}
