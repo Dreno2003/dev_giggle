@@ -29,9 +29,10 @@ function HeroSection() {
           <div className="relative w-full max-w-2xl">
             <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
             <Input
-              placeholder="Search memes..."
+              placeholder="Search memes by ..."
               className="w-full pl-10 bg-background/95 h-12"
             />
+            {/* include filter */}
           </div>
           {/* <div className="flex flex-wrap justify-center gap-2">
             {["JavaScript", "CSS", "React", "UI/UX", "Git", "Python"].map(

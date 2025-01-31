@@ -68,6 +68,7 @@ export default function MemeUploadForm() {
   };
 
   const handleTagsChange = (newTags: string[]) => {
+    if (tags.length >= 5) return
     setTags((prev) => {
       if (prev.includes(newTags[0])) return prev;
       const xTags = [...prev, ...newTags];
