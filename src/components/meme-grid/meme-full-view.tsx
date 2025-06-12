@@ -92,7 +92,7 @@ function MemeFullView(props: MemeFullViewProps) {
         <DialogContent className="max-w-3xl md:max-w-xl h-auto md:max-h-[40rem]  ">
           {props.selectedMeme && (
             <div className="relative b">
-              <Button
+              {/* <Button
                 size="icon"
                 variant="destructive"
                 rounded={"full"}
@@ -100,7 +100,7 @@ function MemeFullView(props: MemeFullViewProps) {
                 onClick={() => props.setSelectedMeme(null)}
               >
                 <X className="h-4 w-4" />
-              </Button>
+              </Button> */}
               <div className="space-y-3">
                 <div>
                   <Carousel>

@@ -25,7 +25,8 @@ export interface Meme {
   tags: string[]; // List of tags for categorization (e.g., ["funny", "cat"])
   disputed: boolean; // Indicates if the meme is under dispute
   views: number; // Total views of the meme
-  likes: number; // Total likes on the meme
+  likes: string[]; // Total likes on the meme
+  likeCount: number; // Total likes on the meme
   comments: number; // Total comments on the meme
 }
 

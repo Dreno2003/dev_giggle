@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { Download, Copy,Share } from "lucide-react";
+import { Download, Copy } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Meme } from "@/models/meme.model";
 import { SyncLoader } from "react-spinners";
 import MemeFullView from "./meme-full-view";
 import { FileUtils } from "@/utils/file.utils";
+import EngagementButtons from "./engagement-button";
+import { useAppSelector } from "@/store/redux-state-hook";
 
 interface MemeGridProps {
   Memes: Meme[];
@@ -17,6 +19,9 @@ interface MemeGridProps {
 export default function MemeGrid(props: MemeGridProps) {
   const [selectedMeme, setSelectedMeme] = useState<Meme | null>(null);
   const [hoverselectedMeme, setHoverSelectedMeme] = useState<Meme | null>(null);
+  const { user } = useAppSelector((state) => state.user);
+  const isLiked = hoverselectedMeme?.likes.includes(user?.uid ?? "");
+  console.log(isLiked, 'this is called liked')
   // const [heights, setHeights] = useState<number[]>([]);
 
   // const handleImageLoad = (event:HTMLImageElement, index:number) => {
@@ -82,8 +87,14 @@ export default function MemeGrid(props: MemeGridProps) {
                 </p> */}
                 {hoverselectedMeme &&
                   hoverselectedMeme?.imageUrls.length > 1 && (
-                    <Copy className="h-4 w-4 absolute top-4 text-gray-300 " />
+                    <Copy className="h-4 w-4 absolute  right-4 top-4 text-gray-300 " />
                   )}
+
+                <EngagementButtons
+                  memeId={hoverselectedMeme?.id ?? ""}
+                  isLiked={isLiked ?? false}
+                />
+
                 <div className="w-full relative flex justify-between items-center">
                   <h3 className="text-white font-medium truncate">
                     {meme.title}
@@ -92,14 +103,15 @@ export default function MemeGrid(props: MemeGridProps) {
                     <Button
                       size="icon"
                       variant="secondary"
-                      className="h-8 w-8"
+                      className="h-8 w-8 hidden"
                       onClick={(e) => {
                         e.stopPropagation();
                         // TODO implement share
                         // copyImage(meme.imageUrl);
                       }}
                     >
-                      <Share className="h-4 w-4" />
+                      {/* <ShareButton imageUrls={hoverselectedMeme?.imageUrls ?? []}  /> */}
+                      {/* <Share className="h-4 w-4" /> */}
                     </Button>
                     <Button
                       size="icon"

@@ -20,6 +20,7 @@ export class FileUtils {
       useWebWorker: true, // Use a web worker for faster compression
     };
 
+    
     try {
       const compressedFile = await imageCompression(file, options);
 
